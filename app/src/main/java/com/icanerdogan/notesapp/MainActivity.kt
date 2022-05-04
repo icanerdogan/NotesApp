@@ -9,16 +9,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        replaceFragment(HomeFragment.newInstance(), true)
+        replaceFragment(HomeFragment.newInstance(), false)
     }
 
-    private fun replaceFragment(fragment: Fragment, isTransition : Boolean){
+    fun replaceFragment(fragment:Fragment, istransition:Boolean){
         val fragmentTransition = supportFragmentManager.beginTransaction()
 
-        if(isTransition){
-            fragmentTransition.setCustomAnimations(android.R.anim.slide_out_right, android.R.anim.slide_in_left)
+        if (istransition){
+            fragmentTransition.setCustomAnimations(android.R.anim.slide_out_right,android.R.anim.slide_in_left)
         }
+        fragmentTransition.add(R.id.frameLayout,fragment).addToBackStack(fragment.javaClass.simpleName).commit()
+    }
 
-        fragmentTransition.replace(R.id.frameLayout, fragment).addToBackStack(fragment.javaClass.simpleName)
+    override fun onBackPressed() {
+        finish()
     }
 }
