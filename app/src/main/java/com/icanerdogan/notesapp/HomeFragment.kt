@@ -7,8 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.createBitmap
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.icanerdogan.notesapp.adapter.NotesAdapter
+import com.icanerdogan.notesapp.model.Notes
+import com.icanerdogan.notesapp.service.NotesDatabase
 import com.icanerdogan.notesapp.util.ReplaceFragment.Companion.replaceFragment
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.coroutines.launch
 
 class HomeFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +37,17 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        recyclerView.setHasFixedSize(true)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        launch {
+            context?.let {
+                val notes = NotesDatabase.getDatabase(it).noteDao().getAllNotes()
+                recyclerView.adapter = NotesAdapter(notes)
+
+            }
+        }
         floatingButtonCreateNote.setOnClickListener {
             replaceFragment(parentFragmentManager, CreateNoteFragment.newInstance(), true)
         }

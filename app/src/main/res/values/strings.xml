@@ -11,4 +11,5 @@
     <string name="ok">OK</string>
     <string name="notes_desc">Enter Note Here</string>
     <string name="todo">TODO</string>
+    <string name="notes">My Notes</string>
 </resources>
