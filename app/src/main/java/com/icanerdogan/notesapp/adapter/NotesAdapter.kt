@@ -1,5 +1,6 @@
 package com.icanerdogan.notesapp.adapter
 
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,16 @@ class NotesAdapter(private val notesList: List<Notes>) : RecyclerView.Adapter<No
             holder.itemView.cardView.setCardBackgroundColor(Color.parseColor(notesList[position].color))
         }else{
             holder.itemView.cardView.setCardBackgroundColor(Color.parseColor("#171C26"))
+        }
+
+        if (notesList[position].imagePath != null){
+            holder.itemView.imgNote.setImageBitmap(
+                BitmapFactory.decodeFile(notesList[position].imagePath)
+            )
+            holder.itemView.imgNote.visibility = View.VISIBLE
+        } else {
+            holder.itemView.imgNote.visibility = View.GONE
+
         }
     }
 

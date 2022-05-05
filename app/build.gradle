@@ -54,6 +54,10 @@ dependencies {
     // Scalable Unit Size
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
 
+    // Easy Permission
+    implementation 'pub.devrel:easypermissions:2.0.1'
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
     // ROOM
     def roomVersion = '2.4.2'
     implementation "androidx.room:room-runtime:$roomVersion"

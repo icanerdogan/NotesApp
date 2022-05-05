@@ -12,4 +12,6 @@
     <string name="notes_desc">Enter Note Here</string>
     <string name="todo">TODO</string>
     <string name="notes">My Notes</string>
+    <string name="storage_permissions_text">This app needs access to your storage.</string>
+    <string name="permissions_granted">Permission Granted!</string>
 </resources>

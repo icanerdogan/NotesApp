@@ -116,7 +116,7 @@
         app:layout_constraintTop_toBottomOf="@id/l1">
 
         <ImageView
-            android:id="@+id/imgNote"
+            android:id="@+id/imgNoteCreateNote"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_300sdp"
             android:visibility="gone"
