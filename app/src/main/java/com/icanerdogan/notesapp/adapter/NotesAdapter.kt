@@ -8,7 +8,7 @@ import com.icanerdogan.notesapp.R
 import com.icanerdogan.notesapp.model.Notes
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NotesAdapter(val notesList: List<Notes>) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
+class NotesAdapter(private val notesList: List<Notes>) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
 
     class NotesViewHolder(view: View) : RecyclerView.ViewHolder(view){
 

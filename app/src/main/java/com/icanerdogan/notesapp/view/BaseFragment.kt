@@ -1,4 +1,4 @@
-package com.icanerdogan.notesapp
+package com.icanerdogan.notesapp.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

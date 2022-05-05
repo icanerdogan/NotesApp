@@ -1,15 +1,12 @@
-package com.icanerdogan.notesapp
+package com.icanerdogan.notesapp.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.createBitmap
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.icanerdogan.notesapp.R
 import com.icanerdogan.notesapp.adapter.NotesAdapter
-import com.icanerdogan.notesapp.model.Notes
 import com.icanerdogan.notesapp.service.NotesDatabase
 import com.icanerdogan.notesapp.util.ReplaceFragment.Companion.replaceFragment
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -49,7 +46,7 @@ class HomeFragment : BaseFragment() {
             }
         }
         floatingButtonCreateNote.setOnClickListener {
-            replaceFragment(parentFragmentManager, CreateNoteFragment.newInstance(), true)
+            replaceFragment(parentFragmentManager, CreateNoteFragment.newInstance(), false)
         }
     }
 }

@@ -1,8 +1,8 @@
-package com.icanerdogan.notesapp
+package com.icanerdogan.notesapp.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import com.icanerdogan.notesapp.R
 import com.icanerdogan.notesapp.util.ReplaceFragment.Companion.replaceFragment
 
 class MainActivity : AppCompatActivity() {

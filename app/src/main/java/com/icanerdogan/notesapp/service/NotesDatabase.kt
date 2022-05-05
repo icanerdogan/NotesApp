@@ -10,7 +10,7 @@ import com.icanerdogan.notesapp.model.Notes
 abstract class NotesDatabase : RoomDatabase() {
 
     companion object {
-        var notesDatabase: NotesDatabase? = null
+        private var notesDatabase: NotesDatabase? = null
 
         @Synchronized
         fun getDatabase(context: Context): NotesDatabase{

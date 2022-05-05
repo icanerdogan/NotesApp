@@ -1,11 +1,11 @@
-package com.icanerdogan.notesapp
+package com.icanerdogan.notesapp.view
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.icanerdogan.notesapp.R
 import com.icanerdogan.notesapp.model.Notes
 import com.icanerdogan.notesapp.service.NotesDatabase
 import com.icanerdogan.notesapp.util.ReplaceFragment.Companion.replaceFragment
@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CreateNoteFragment : BaseFragment() {
-    var currentDate: String? = null
+    private var currentDate: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -44,6 +44,7 @@ class CreateNoteFragment : BaseFragment() {
 
         imgDone.setOnClickListener {
             saveNote()
+            replaceFragment(parentFragmentManager, HomeFragment.newInstance(), false)
         }
 
         imgBack.setOnClickListener {
