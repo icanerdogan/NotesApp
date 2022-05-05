@@ -5,10 +5,19 @@
       <map>
         <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/background.xml" value="0.1705" />
         <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/ic_search.xml" value="0.188" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/ic_tick.xml" value="0.188" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/note_color_1.xml" value="0.148" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/note_color_2.xml" value="0.148" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/note_color_3.xml" value="0.148" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/note_color_4.xml" value="0.148" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/note_color_5.xml" value="0.148" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/note_color_6.xml" value="0.148" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/drawable/note_color_7.xml" value="0.145" />
         <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/font/font.xml" value="0.17407407407407408" />
         <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/layout/activity_main.xml" value="0.17572463768115942" />
         <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/layout/fragment_create_note.xml" value="0.17527173913043478" />
         <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/layout/fragment_home.xml" value="0.1796875" />
+        <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/layout/fragment_notes_bottom_sheet.xml" value="0.1796875" />
         <entry key="..\:/Users/ibrahim.erdogan/OneDrive - Logo/Documents/Code/Kotlin/Projects/NotesApp/app/src/main/res/layout/item_note.xml" value="0.17572463768115942" />
       </map>
     </option>

@@ -1,5 +1,6 @@
 package com.icanerdogan.notesapp.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,12 @@ class NotesAdapter(private val notesList: List<Notes>) : RecyclerView.Adapter<No
         holder.itemView.tvTitle.text = notesList[position].title
         holder.itemView.tvDesc.text = notesList[position].noteText
         holder.itemView.tvDateTime.text = notesList[position].dateTime
+
+        if (notesList[position].color != null){
+            holder.itemView.cardView.setCardBackgroundColor(Color.parseColor(notesList[position].color))
+        }else{
+            holder.itemView.cardView.setCardBackgroundColor(Color.parseColor("#171C26"))
+        }
     }
 
     override fun getItemCount(): Int {
