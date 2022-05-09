@@ -1,5 +1,6 @@
 package com.icanerdogan.notesapp.view
 
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -8,12 +9,15 @@ import android.content.IntentFilter
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.icanerdogan.notesapp.R
 import com.icanerdogan.notesapp.model.Notes
@@ -27,14 +31,13 @@ import pub.devrel.easypermissions.EasyPermissions
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.jar.Manifest
 
 class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
 
     var selectedColor = "#171C26"
     private val READ_STORAGE_PERM_CODE = 123
-    private val REQUEST_CODE_IMAGE = 456
     private var selectedImagePath = ""
+    private var webLink = ""
 
     private var currentDate: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +75,6 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, 
 
         imgDone.setOnClickListener {
             saveNote()
-            replaceFragment(parentFragmentManager, HomeFragment.newInstance(), false)
         }
 
         imgBack.setOnClickListener {
@@ -82,6 +84,20 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, 
         imgMore.setOnClickListener {
             val noteBottomSheetFragment = NoteBottomSheetFragment.newInstance()
             noteBottomSheetFragment.show(requireActivity().supportFragmentManager, "Note Bottom Sheet Fragment")
+        }
+        btnOk.setOnClickListener {
+            if (etWebLink.text.toString().trim().isNotEmpty()){
+                checkWebUrl()
+            } else {
+                Toast.makeText(requireContext(), "URL is required!", Toast.LENGTH_SHORT).show()
+            }
+        }
+        btnCancel.setOnClickListener {
+            layoutWebUrl.visibility = View.GONE
+        }
+        tvWebLink.setOnClickListener {
+            var intent = Intent(Intent.ACTION_VIEW, Uri.parse(etWebLink.text.toString()))
+            startActivity(intent)
         }
     }
 
@@ -104,18 +120,31 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, 
                 notes.dateTime = currentDate
                 notes.color = selectedColor
                 notes.imagePath = selectedImagePath
+                notes.webLink = webLink
+
                 context?.let {
                     NotesDatabase.getDatabase(it).noteDao().insertNotes(notes)
                     etNoteTitle.setText("")
                     etNoteSubTitle.setText("")
                     etNoteDesc.setText("")
                     imgNoteCreateNote.visibility = View.GONE
+                    tvWebLink.visibility = View.GONE
                     requireActivity().supportFragmentManager.popBackStack()
                 }
             }
         }
+    }
 
-
+    private fun checkWebUrl(){
+        if (Patterns.WEB_URL.matcher(etWebLink.text.toString()).matches()){
+            layoutWebUrl.visibility =View.GONE
+            etWebLink.isEnabled = false
+            webLink = etWebLink.text.toString()
+            tvWebLink.visibility =View.VISIBLE
+            tvWebLink.text = etWebLink.text.toString()
+        } else {
+            Toast.makeText(requireContext(), "URL is not valid!", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private val broadcastReceiver : BroadcastReceiver = object : BroadcastReceiver(){
@@ -149,8 +178,13 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, 
                 }
                 "Image" -> {
                     readStorageTask()
+                    layoutWebUrl.visibility = View.GONE
+                }
+                "WebUrl" -> {
+                    layoutWebUrl.visibility = View.VISIBLE
                 }
                 else -> {
+                    layoutWebUrl.visibility = View.GONE
                     imgNoteCreateNote.visibility = View.GONE
                     selectedColor = intent.getStringExtra("selectedColor")!!
                     colorView.setBackgroundColor(Color.parseColor(selectedColor))
@@ -186,11 +220,33 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, 
         }
     }
 
+   var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK){
+            if (result.data != null){
+                val selecetedImageUrl = result.data!!.data
+                if (selecetedImageUrl != null){
+                    try {
+                        val inputStream = requireActivity().contentResolver.openInputStream(selecetedImageUrl)
+                        val bitmap = BitmapFactory.decodeStream(inputStream)
+                        imgNoteCreateNote.setImageBitmap(bitmap)
+                        imgNoteCreateNote.visibility = View.VISIBLE
+                        layoutImage.visibility = View.VISIBLE
+                        selectedImagePath = getPathFromUri(selecetedImageUrl)!!
+                    } catch (e: Exception){
+                        Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+
+
     private fun pickImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
         if (intent.resolveActivity(requireActivity().packageManager) != null){
-            startActivityForResult(intent, REQUEST_CODE_IMAGE)
+            resultLauncher.launch(intent)
         }
     }
     private fun getPathFromUri(contentUri: Uri): String? {
@@ -207,26 +263,6 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, 
         return filePath
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == REQUEST_CODE_IMAGE && resultCode == RESULT_OK){
-          if (data != null){
-              val selecetedImageUrl = data.data
-              if (selecetedImageUrl != null){
-                  try {
-                      val inputStream = requireActivity().contentResolver.openInputStream(selecetedImageUrl)
-                      val bitmap = BitmapFactory.decodeStream(inputStream)
-                      imgNoteCreateNote.setImageBitmap(bitmap)
-                      imgNoteCreateNote.visibility = View.VISIBLE
-                      selectedImagePath = getPathFromUri(selecetedImageUrl)!!
-                  } catch (e: Exception){
-                      Toast.makeText(requireContext(), e.message, Toast.LENGTH_SHORT).show()
-                  }
-              }
-          }
-        }
-    }
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -242,16 +278,7 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, 
         }
     }
 
-    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-
-    }
-
-    override fun onRationaleAccepted(requestCode: Int) {
-
-    }
-
-    override fun onRationaleDenied(requestCode: Int) {
-
-    }
-
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {}
+    override fun onRationaleAccepted(requestCode: Int) {}
+    override fun onRationaleDenied(requestCode: Int) {}
 }

@@ -12,9 +12,7 @@ import kotlinx.android.synthetic.main.item_note.view.*
 
 class NotesAdapter(private val notesList: List<Notes>) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
 
-    class NotesViewHolder(view: View) : RecyclerView.ViewHolder(view){
-
-    }
+    class NotesViewHolder(view: View) : RecyclerView.ViewHolder(view){}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesViewHolder {
         return NotesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false))
@@ -38,7 +36,13 @@ class NotesAdapter(private val notesList: List<Notes>) : RecyclerView.Adapter<No
             holder.itemView.imgNote.visibility = View.VISIBLE
         } else {
             holder.itemView.imgNote.visibility = View.GONE
+        }
 
+        if (notesList[position].webLink != null){
+            holder.itemView.tvWebLink.text = notesList[position].webLink
+            holder.itemView.tvWebLink.visibility = View.VISIBLE
+        } else {
+            holder.itemView.tvWebLink.visibility = View.GONE
         }
     }
 
