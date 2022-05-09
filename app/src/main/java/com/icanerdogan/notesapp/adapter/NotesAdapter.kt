@@ -10,9 +10,20 @@ import com.icanerdogan.notesapp.R
 import com.icanerdogan.notesapp.model.Notes
 import kotlinx.android.synthetic.main.item_note.view.*
 
-class NotesAdapter(private val notesList: List<Notes>) : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
+class NotesAdapter : RecyclerView.Adapter<NotesAdapter.NotesViewHolder>() {
+
+    var notesList = ArrayList<Notes>()
+    var listener: OnItemClickListener? = null
 
     class NotesViewHolder(view: View) : RecyclerView.ViewHolder(view){}
+
+    fun setData(arrNotesList: List<Notes>){
+        notesList = arrNotesList as ArrayList<Notes> /* = java.util.ArrayList<com.icanerdogan.notesapp.model.Notes> */
+    }
+
+    fun setOnClickListener(l: OnItemClickListener){
+        listener = l
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesViewHolder {
         return NotesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false))
@@ -44,9 +55,17 @@ class NotesAdapter(private val notesList: List<Notes>) : RecyclerView.Adapter<No
         } else {
             holder.itemView.tvWebLink.visibility = View.GONE
         }
+
+        holder.itemView.cardView.setOnClickListener {
+            listener!!.onClicked(notesList[position].id!!)
+        }
     }
 
     override fun getItemCount(): Int {
         return notesList.size
+    }
+
+    interface OnItemClickListener{
+        fun onClicked(noteId: Int)
     }
 }

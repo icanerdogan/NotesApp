@@ -25,6 +25,10 @@ import com.icanerdogan.notesapp.service.NotesDatabase
 import com.icanerdogan.notesapp.util.NoteBottomSheetFragment
 import com.icanerdogan.notesapp.util.ReplaceFragment.Companion.replaceFragment
 import kotlinx.android.synthetic.main.fragment_create_note.*
+import kotlinx.android.synthetic.main.fragment_create_note.tvWebLink
+import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.item_note.*
+import kotlinx.android.synthetic.main.item_note.view.*
 import kotlinx.coroutines.launch
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -39,29 +43,64 @@ class CreateNoteFragment : BaseFragment(), EasyPermissions.PermissionCallbacks, 
     private var selectedImagePath = ""
     private var webLink = ""
 
+    private var noteId = -1
+
     private var currentDate: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Home Fragment "fragment" arguments
+        noteId = requireArguments().getInt("noteId", -1)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_create_note, container, false)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = CreateNoteFragment().apply {
-            arguments = Bundle().apply {
-            }
-        }
-    }
+        fun newInstance() = CreateNoteFragment().apply { arguments = Bundle().apply {} } }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (noteId != -1 ){
+            launch {
+                context?.let {
+                    val notes = NotesDatabase.getDatabase(it).noteDao().getOneNote(noteId)
+                    colorView.setBackgroundColor(Color.parseColor(notes.color))
+
+                    etNoteTitle.setText(notes.title)
+                    etNoteSubTitle.setText(notes.subTitle)
+                    etNoteDesc.setText(notes.noteText)
+
+                    if (notes.imagePath != ""){
+                        imgNote.setImageBitmap(
+                            BitmapFactory.decodeFile(notes.imagePath)
+                        )
+                        imgNote.visibility = View.VISIBLE
+                        layoutImage.visibility = View.VISIBLE
+
+                    } else {
+                        imgNoteCreateNote.visibility = View.GONE
+                        layoutImage.visibility = View.GONE
+                    }
+
+                    if (notes.webLink != ""){
+                        webLink = notes.webLink!!
+                        tvWebLink.text = notes.webLink
+                        layoutWebUrl.visibility = View.VISIBLE
+                        etWebLink.setText(notes.webLink)
+                        imgUrlDelete.visibility = View.VISIBLE
+                    } else {
+                        imgUrlDelete.visibility = View.GONE
+                        layoutWebUrl.visibility = View.GONE
+                    }
+
+                }
+            }
+        }
         LocalBroadcastManager.getInstance(requireContext()).registerReceiver(
             broadcastReceiver, IntentFilter("bottom_sheet_action")
         )
